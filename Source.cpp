@@ -6,7 +6,8 @@ using namespace std;
 int main()
 {
 	setlocale(LC_ALL, "");
-	string keys[] = { "dog", "free", "cat", "freedom","call", "camera", "cafe", "cinema", "room", "restoran", "red" };
+	string keys[] = { "dog", "free", "cat", "freedom","call", "camera", "cafe", "cinema", "room", "restoran", "red",
+	"hello", "my", "friend", "i"};
 	int n = sizeof(keys) / sizeof(keys[0]);
 	TrieNode* root;
 	root = getNewNode();
@@ -20,10 +21,7 @@ int main()
 
 	char c = 'y';
 	string key;
-	
-	
-	
-	
+	string sentences{}; //для вывода предложения
 	while (c == 'y')
 	{
 		int j = 0;
@@ -57,14 +55,29 @@ int main()
 			cout << "\nВ словаре есть следующие слова с введённым префиксом:" << endl;
 			for (int j = 0; j < count; j++)
 			{
-				cout << res[j] << endl;
+				cout << j + 1 << ": " << res[j] << endl;
+			}
+			int choice;
+			cout << "\nУкажите номер слова, которое хотите выбрать:" << endl;
+			cin >> choice;
+			if (choice > count || choice <= 0)
+			{
+				cout << "Некорректный ввод!" << endl;
+			}
+			else
+			{
+				sentences += res[choice - 1];
+				sentences += ' ';
 			}
 		}
 		if (count == 1)
 		{
+			sentences += res[0];
+			sentences += ' ';
 			cout << "\nВ словаре есть одно слово с введённым префиксом:" << endl;
-			cout << res[0] << endl;
 		}
+
+		cout << sentences << endl;
 		cout << "\nХотите продолжить ввод?(y/n)" << endl;
 		cin >> c;
 	}
