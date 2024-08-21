@@ -24,7 +24,6 @@ int main()
 	string sentences{}; //для вывода предложения
 	while (c == 'y')
 	{
-		int j = 0;
 		int count = 0;
 		string result{};
 		string word{};
@@ -34,6 +33,7 @@ int main()
 		autocomplete(root, key,result);
 		int f = result.size();
 
+		// запись строки string в массив типа string для выбора необходимого слова по индексу
 		for (int i = 0; i < f; i++)
 		{
 
@@ -44,8 +44,7 @@ int main()
 
 			else
 			{
-				res[j++] = word;
-				count++;
+				res[count++] = word;
 				word = {};
 			}
 		}
@@ -77,9 +76,8 @@ int main()
 			cout << "\nВ словаре есть одно слово с введённым префиксом:" << endl;
 		}
 
-		cout << sentences << endl;
+		cout << endl << sentences << endl;
 		cout << "\nХотите продолжить ввод?(y/n)" << endl;
 		cin >> c;
 	}
-	
 }

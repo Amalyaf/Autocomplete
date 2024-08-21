@@ -18,7 +18,6 @@ TrieNode* getNewNode(void)
     return pNode;
 }
 
-
 // Вставляет ключ в дерево, если его нет, 
 // иначе если ключ явлется префксом узла дерева 
 // помечает вкачестве литового т.е. конец слова
@@ -43,7 +42,7 @@ void insert(TrieNode* root, string key)
     node->isEndOfWord = true;
 }
 
-// Возврашает true если ключ есть в дереве, иначе false 
+// Возврашает true, если ключ есть в дереве, иначе - false 
 bool search(TrieNode* root, string key)
 {
     TrieNode* node = root;
@@ -60,7 +59,7 @@ bool search(TrieNode* root, string key)
     return (node != nullptr && node->isEndOfWord);
 }
 
-// Вохвращает true если root имеет лист, иначе false 
+// Возвращает true, если root имеет лист, иначе - false 
 bool isEmpty(TrieNode* root)
 {
     for (int i = 0; i < ALPHABET_SIZE; i++)
@@ -117,7 +116,7 @@ void findMinPref(TrieNode* root)
     int index = 0;
     findMinPrefixes(root, buf, index, res);
 }
-// не изменияйте сигнатуру функции
+
 void findMinPrefixes(TrieNode* root, char buf[], int ind, string& res)
 {
     if (root == nullptr)
@@ -156,7 +155,7 @@ void printInner(TrieNode* root, char buf[],int ind, string& res)
    // Если текущий узел является концом слова(root->isEndOfWord), мы добавляем символ окончания строки в буфер, 
    // затем добавляем слово в результат res и добавляем пробел.
    //Проходим по всем возможным детям узла
-   // Если узел не пустой, добавляем соответствующий символ в буфер и рекурсивно вызываем printInnet для 
+   // Если узел не пустой, добавляем соответствующий символ в буфер и рекурсивно вызываем printInner для 
     //следующего уровня дерева
    if (!root)
         return;
@@ -189,24 +188,25 @@ void autocomplete(TrieNode* root, string key, string& result)
     for (i = 0; i < key.size(); i++)
     {
         index = key[i] - 'a';
-        if (!node->children[index])
+        if (!node->children[index]) // если символ не найден выходим из цикла
         {
-            std::cout << "Слово не найдено" << std::endl;
+            std::cout << "\nСлово не найдено" << std::endl;
             break;
         }
         node = node->children[index];
     }
-    if (i == key.size())
+    if (i == key.size()) // если дошли до конца цикла, значит key является префиксом для слова
     {
-        printWords(root,key,result);
+        findWords(root,key,result);
     }
 }
 
-void printWords(TrieNode* root, string key, string& result)
+void findWords(TrieNode* root, string key, string& result)
 {
     TrieNode* node = root;
-    char buf[26];
+    char buf[30];
     int j = 0;
+    // записываем префикс в buf и переходим к рекурсивному методу findWordInner
     for (int i = 0; i < key.size(); i++)
     {
         int index = key[i] - 'a';
@@ -216,35 +216,36 @@ void printWords(TrieNode* root, string key, string& result)
             node = node->children[index];
         }
     }
-
-    printWordInner(node, buf, j, result);
-    //std::cout << result << endl;
+    findWordInner(node, buf, j, result);
 }
 
-void printWordInner(TrieNode* root, char buf[], int ind, string& result)
+void findWordInner(TrieNode* root, char buf[], int ind, string& result)
 {
     if (!root)
     {
         return;
     }
       
-
+    // Если текущий узел является концом слова(root->isEndOfWord), мы добавляем символ окончания строки в буфер, 
+    // затем добавляем слово в результат res и добавляем пробел.
     if (root->isEndOfWord)
     {
         buf[ind] = '\0';
         result += buf;
         result += ' ';
-        
         return;
     }
 
     for (int i = 0; i < ALPHABET_SIZE; i++)
     {
+        //Проходим по всем возможным детям узла
+        // Если узел не пустой, добавляем соответствующий символ в буфер и рекурсивно вызываем findWordInner для 
+        //следующего уровня дерева
         if (root->children[i] != nullptr)
         {
             buf[ind] = i + 'a';
             buf[ind + 1] = '\0';
-            printWordInner(root->children[i], buf, ind + 1, result);
+            findWordInner(root->children[i], buf, ind + 1, result);
         }
     }
 }
