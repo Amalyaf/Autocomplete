@@ -79,5 +79,6 @@ int main()
 		cout << endl << sentences << endl;
 		cout << "\nХотите продолжить ввод?(y/n)" << endl;
 		cin >> c;
+		delete[]res;
 	}
 }
